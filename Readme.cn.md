@@ -9,6 +9,7 @@
 2. 網頁版本，使用 HTML、CSS、canvas。
 	- 使用 fengari (https://fengari.io/) 连接 javascript 和 Lua。
 	- 使用定时器 timer (setInterval) 控制刷新速度。
+	- 使用 file.lua.js 以避免額外設定 網絡伺服器。
 
 3. 桌面版本，使用 Python、lupa、pygame。
 	- 使用 lupa (https://pypi.org/project/lupa/) 连接 python 和 lua。
