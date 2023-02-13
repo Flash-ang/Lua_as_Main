@@ -1,0 +1,40 @@
+$> python Test.py
+lupa  1.13
+
+python load lua by string :
+lua print       123
+
+python lua.execute :
+LUA_VERSION     Lua 5.4
+Your system is 32-bit
+native size 32 bit
+lua_Integer 64 bit
+luacofig.h - define LUA_32BITS :        64
+456
+
+python load external lua file :
+this is Test.lua.js
+python call lua :
+lua : luaTest()
+pyFunc1 789
+
+
+
+---------- ---------- ---------- ---------- ----------
+Open your browser's console
+http://localhost/Test.html
+
+this is Test.lua.js
+LUA_VERSION 	Lua 5.3
+Your system is 32-bit
+native size 32 bit
+lua_Integer 32 bit
+luacofig.h - define LUA_32BITS : 	32
+456
+
+XHRGEThttp://localhost/Test.lua.js
+[HTTP/1.1 200 OK 0ms]
+
+js call lua :
+lua : luaTest()
+js1()  789
