@@ -1,0 +1,106 @@
+Tic-Tac-Toe
+
+Js / Python provide :
+
+	clearScreen - fill screen with 1 colour.
+
+	drawBoard  - draw a Tic-Tac-Toe "#" board.
+	drawX      - draw "X" based on board's x/y (3 by 3).
+	drawCircle - draw "O" based on board's x/y (3 by 3).
+
+	drawText - draw text.
+
+	read keyboard (f1, esc, 1 -- 9).
+
+SCREEN DESIGN (300X300): 
+
+   0    80 130  180 230   300
+        x1  x2   x3  x4    
+   ........................ 000
+   .     PLAYER 1         .
+   .                      . 050
+   .                      .
+y1 .    *   |    |   *    . 100
+   .        |    |        .
+y2 .    ----|----|----    . 150
+   .        |    |        .
+y3 .    ----|----|----    . 200
+   .        |    |        .
+y4 .    *   |    |   *    . 250
+   .                      .
+   ........................ 300
+
+xw = 50;        #//cell width
+x1 = 80;        #//left edge
+x2 = xw + x1;   #//vertical bar left (130)
+x3 = xw + x2;   #//vertical bar right (180)
+x4 = xw + x3;   #//right edge (230)
+
+yh = 50         #//cell height
+y1 = 100;       #//top edge
+y2 = yh + y1;   #//horizontal bar 1 (150)
+y3 = yh + y2;   #//horizontal bar 2 (200)
+y4 = yh + y3;   #//bottom edge (250)
+
+
+
+The board XY / Key : 
+
+    X1  X2  X3
+Y1   1   2   3
+Y2   4   5   6
+Y3   7   8   9
+
+
+---------- ---------- ---------- ---------- ---------- 
+井字游戏
+
+Js/Python 提供：
+	clearScreen - 用一种颜色填充屏幕。
+
+	drawBoard  - 绘制井字棋 "#" 遊戲盤。
+	drawX      - 根据板的 x/y（3 x 3）绘制 "X"。
+	drawCircle - 根据棋盘的 x/y（3 x 3）绘制 "O"。
+
+	drawText - 绘制文字。
+
+	讀取键盘 (f1, esc, 1 -- 9)。
+
+畫面設定 (300X300): 
+
+   0    80 130  180 230   300
+        x1  x2   x3  x4    
+   ........................ 000
+   .     PLAYER 1         .
+   .                      . 050
+   .                      .
+y1 .    *   |    |   *    . 100
+   .        |    |        .
+y2 .    ----|----|----    . 150
+   .        |    |        .
+y3 .    ----|----|----    . 200
+   .        |    |        .
+y4 .    *   |    |   *    . 250
+   .                      .
+   ........................ 300
+
+xw = 50;        #//格子寬度
+x1 = 80;        #//左邊
+x2 = xw + x1;   #//左垂直線 (130)
+x3 = xw + x2;   #//右垂直線 (180)
+x4 = xw + x3;   #//右邊 (230)
+
+yh = 50         #//格子高度
+y1 = 100;       #//頂部
+y2 = yh + y1;   #//水平線 1 (150)
+y3 = yh + y2;   #//水平線 2 (200)
+y4 = yh + y3;   #//底部 (250)
+
+
+
+棋盤的 xy 軸 / 對應鍵
+
+    X1  X2  X3
+Y1   1   2   3
+Y2   4   5   6
+Y3   7   8   9
