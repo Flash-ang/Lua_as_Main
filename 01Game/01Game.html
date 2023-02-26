@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+    <script src="./fengari-web.js" type="text/javascript"></script>
+    <script src="./01Game.lua.js" type="application/lua" ></script>
+</head>
+
+<body id="body1" >
+<canvas id="canvas" width="300" height="300" style="border:solid 1px black; background-color:#7f7f7f" ></canvas>
+
+<script type="text/javascript">
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+
+    //global variables for keypress
+    var keyCode = 0;
+    var keyName = '';
+    var keyEsc = false; // 27
+    var gameQuit = false;
+
+    //js variables for fps
+    let timeFrame1 = Date.now();
+    let frames = 0;
+    let fps = 0;
+
+    //var time_start = new Date().getTime();
+    //let timeStart = Date.now();
+    let jsTimer; //use to "clear timer"
+
+    //js variables for draw board, "x", "o"
+
+    //js variables for draw "#" board
+    let xw = 50;        //cell width
+    let x1 = 80;        //left edge
+    let x2 = xw + x1;   //vertical bar left
+    let x3 = xw + x2;   //vertical bar right
+    let x4 = xw + x3;   //right edge
+    //console.log( 'check x ', x1, x2, x3, x4, xw );
+    let yh = 50 //cell height
+    let y1 = 100;       //top edge
+    let y2 = yh + y1;   //horizontal bar 1
+    let y3 = yh + y2;   //horizontal bar 2
+    let y4 = yh + y3;   //bottom edge
+
+    // X pos
+    let crossWidth = 30;
+    let crossHeight = 30;
+    let crossX1 = x1 + 10;
+    let crossY1 = y1 + 10;
+    let crossX2 = x2 + 10;
+    let crossY2 = y2 + 10;
+    let crossX3 = x3 + 10;
+    let crossY3 = y3 + 10;
+
+    // O pos
+    let circleRadius = 15;
+    let circleX1 = x1 + xw / 2;
+    let circleX2 = x2 + xw / 2;
+    let circleX3 = x3 + xw / 2;
+    let circleY1 = y1 + yh / 2;
+    let circleY2 = y2 + yh / 2;
+    let circleY3 = y3 + yh / 2;
+
+    function RGBtoHex(r1, g1, b1) {
+        r = ("0"+ Number(r1).toString(16)).slice(-2).toUpperCase()
+        g = ("0"+ Number(g1).toString(16)).slice(-2).toUpperCase()
+        b = ("0"+ Number(b1).toString(16)).slice(-2).toUpperCase()
+        return  ( r+g+b )
+    }
+
+    function jsClearScreen( clear ) {
+        ctx.fillStyle = "#0FF";
+        if( clear ) {
+            ctx.fillStyle = "#FFF";
+        }
+        ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
+    }
+
+    function jsDrawBoard() {
+        pos1x = (x2 - x1) / 2 + x1;
+        pos1y = (y2 - y1) / 2 + y1;
+
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.strokeStyle = 'black';
+        ctx.moveTo( x1, y2 );
+        ctx.lineTo( x4, y2 ); // lineTo(x, y)
+        ctx.stroke();
+        ctx.moveTo( x1, y3 );
+        ctx.lineTo( x4, y3 );
+        ctx.stroke();
+
+        ctx.moveTo( x2, y1 );
+        ctx.lineTo( x2, y4 ); // lineTo(x, y)
+        ctx.stroke();
+        ctx.moveTo( x3, y1 );
+        ctx.lineTo( x3, y4 ); // lineTo(x, y)
+        ctx.stroke();
+    } //drawBoard()
+
+    function jsDrawX( boardX, boardY ) {
+        let x1, y1, x2, y2;
+
+        if( boardX == 1 ) x1 = crossX1;
+        if( boardX == 2 ) x1 = crossX2;
+        if( boardX == 3 ) x1 = crossX3;
+
+        if( boardY == 1 ) y1 = crossY1;
+        if( boardY == 2 ) y1 = crossY2;
+        if( boardY == 3 ) y1 = crossY3;
+
+        x2 = x1 + crossWidth;
+        y2 = y1 + crossHeight;
+
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.strokeStyle = 'blue';
+
+        ctx.moveTo( x1, y1 );
+        ctx.lineTo( x2, y2);
+        ctx.stroke();
+
+        ctx.moveTo( x2, y1);
+        ctx.lineTo( x1, y2);
+        ctx.stroke();
+    }
+
+    function jsDrawCircle( boardX, boardY ) {
+        let x1, y1;
+
+        if( boardX == 1 ) x1 = circleX1;
+        if( boardX == 2 ) x1 = circleX2;
+        if( boardX == 3 ) x1 = circleX3;
+
+        if( boardY == 1 ) y1 = circleY1;
+        if( boardY == 2 ) y1 = circleY2;
+        if( boardY == 3 ) y1 = circleY3;
+
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = `rgb( 255, 0, 0 )`;
+        ctx.arc( x1, y1, circleRadius, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
+
+    function jsDrawText( x, y, text, r, g, b ) {
+        ctx.font = "30px Arial Narrow";
+
+        ctx.fillStyle = `#`+RGBtoHex( r, g, b );
+
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+        ctx.fillText( text, x, y );
+    }
+
+    function TestDraw() {
+        jsClearScreen( true );
+        jsDrawBoard();
+
+        jsDrawText( 10, 10, 'jsDrawText', 128, 128, 128 )
+
+        jsDrawCircle( 1, 1 );
+        jsDrawCircle( 1, 2 );
+        jsDrawCircle( 1, 3 );
+        jsDrawCircle( 2, 1 );
+        jsDrawCircle( 2, 2 );
+        jsDrawCircle( 2, 3 );
+        jsDrawCircle( 3, 1 );
+        jsDrawCircle( 3, 2 );
+        jsDrawCircle( 3, 3 );
+
+        jsDrawX( 1, 1 );
+        jsDrawX( 1, 2 );
+        jsDrawX( 1, 3 );
+        jsDrawX( 2, 1 );
+        jsDrawX( 2, 2 );
+        jsDrawX( 2, 3 );
+        jsDrawX( 3, 1 );
+        jsDrawX( 3, 2 );
+        jsDrawX( 3, 3 );
+    } //TestDraw()
+
+</script>
+
+<script type="application/lua">
+    -- map functions
+    js = require "js"
+    if( window == nil ) then
+        window = js.global
+    end
+
+    -- map functions start.
+
+    -- map lua function for js uses.
+    window['lua_ginit'] = ginit;
+    window['lua_gloop'] = gloop;
+
+    -- map js function for lua uses.
+    window.clearScreen = function( c ) window:jsClearScreen( c ); end
+
+    window.drawBoard = function() window:jsDrawBoard(); end
+
+    function window.drawX(x, y)
+        window:jsDrawX( x, y );
+    end
+
+    window.drawCircle = function(x, y)
+        window:jsDrawCircle( x, y );
+    end
+
+    function window.drawText( x, y, txt, r, g, b )
+        window:jsDrawText( x, y, txt, r, g, b );
+    end
+
+    -- map functions done.
+
+</script>
+<!-- script type="application/lua" -->
+
+<script type="text/javascript">
+    var lua_load;
+    var startLoop = false;
+
+    // functions and events
+    function updateKey( event, press ) {
+        //console.log( 'updateKey', event, press );
+
+        if( press ) {
+            keyCode = event.keyCode;
+            // event.charCode Deprecated: This feature is no longer recommended.
+            keyName = event.key;
+        } else {
+            keyCode = 0;
+            keyName = '';
+        }
+
+        switch( event.keyCode ) {
+            case 27:
+                // Escape
+                //gameQuit = true;
+                keyEsc = press;
+                break;
+        } //switch
+    } //myKeydown
+
+    function myKeyDown( event ) {
+        updateKey( event, true );
+    }
+
+    function myKeyUp( event ) {
+        updateKey( event, false );
+    }
+
+    function myTimer() {
+
+        // check if lua file is loaded.
+        if( lua_load && !startLoop ) {
+            window.lua_ginit();
+            startLoop = true;
+        }
+
+        if( !startLoop ) {
+            return;
+        }
+
+        // if message (from lua) than exit
+        if( gameQuit ) {
+            console.log( 'lua ask for quit, stop.' );
+            //clearInterval( jsTimer );
+            return;
+        }
+
+        window.lua_gloop();
+
+        frames ++;
+        let x = Date.now() - timeFrame1;
+        if ( x >= 1000 ) {
+            let fps = frames / x * 1000;
+            timeFrame1 = Date.now();
+            console.log( 'this is myTimer() ', fps.toFixed(2), frames, timeFrame1, x, window.gameMode );
+            frames = 0;
+        }
+    } //myTimer
+
+    function loadScript() {
+        console.log( "lua01.onload", 'lua_load', lua_load );
+        window.ginit();
+        // console.log( node1, textnode1 );
+    }
+    // window.onload = loadScript();
+
+    console.log( 'main js : lua_load', lua_load );
+    document.onkeydown = myKeyDown;
+    document.onkeyup = myKeyUp;
+
+    <!-- TestDraw(); -->
+    const timerSpeedMS = 16;
+    // Browser setInterval minimum 10.
+    // 1000 / 12 = 83.333 fps
+    // 1000 / 16 = 62.500 fps
+    jsTimer = setInterval( myTimer, timerSpeedMS );
+    console.log( 'gameMode', window.gameMode );
+</script>
+
+</body>
+</html>
