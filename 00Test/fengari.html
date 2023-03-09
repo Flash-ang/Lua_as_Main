@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+    <script src="./fengari-web.js" type="text/javascript"></script>
+    <script src="./Test.lua.js" type="application/lua" ></script>
+</head>
+
+<body id="body1" >
+<span>Check output from console</span>
+
+<script type="text/javascript">
+    //js function for lua to call
+    function js1( value ) {
+        console.log( 'js1() ', value );
+    }
+</script>
+
+<script type="application/lua">
+    print( 'LUA_VERSION ', _VERSION );
+
+    arch = _VERSION
+    if (arch or ""):match"64" then
+       print"Your system is 64-bit"
+       arch = arch .. ', 64-bit \n'
+    else
+       print"Your system is 32-bit"
+       arch = arch .. ', 32-bit \n'
+    end
+
+    if( string.pack ~= nil ) then
+        if #string.pack("T",0) == 4 then
+            print( 'native size 32 bit' )
+        end
+
+        if #string.pack("T",0) == 8 then
+            print( 'native size 64 bit' )
+        end
+
+        if #string.pack("j",0) == 4 then
+            print( 'lua_Integer 32 bit' )
+        end
+
+        if #string.pack("j",0) == 8 then
+            print( 'lua_Integer 64 bit' )
+        end
+    else
+        print( 'string.pack check need lua 5.3?' );
+    end
+
+    function _86or64()
+        if(0xfffffffff==0xffffffff) then return 32 else return 64 end
+    end
+
+    print( 'luacofig.h - define LUA_32BITS : ', _86or64());
+
+
+
+    -- map functions
+    js = require "js"
+    if( window == nil ) then
+        window = js.global
+    end
+
+    x = load( 'print(456)');
+    x();
+
+    -- map functions start.
+
+    -- map lua function for js uses.
+    window['luaTest'] = luaTest;
+
+    -- map js function for lua uses.
+    window.func1 = function( value ) window:js1( value ); end
+
+    -- map functions done.
+
+</script>
+<!-- script type="application/lua" -->
+
+
+<script type="text/javascript">
+    console.log( 'js call lua :' );
+    window.luaTest();
+
+
+
+</script>
+
+</body>
+</html>
+
+<!--
+a = [];
+a[0] = 123;
+a['1'] = 456;
+a.push( 789 );
+a['x'] = 135;
+
+console.log( a[0] );
+console.log( a[1] );
+console.log( a['1'] );
+console.log( a[2] );
+console.log( a['x'] );
+console.log( a.x );
+
+console.log( a );
+
+** result : 
+
+a[0] = 123
+a[1] = 456
+a['1'] = 456
+a[2] = 789
+a['x'] = 135
+a.x = 135
+
+Array(3) [ 123, 456, 789 ]
+​    0: 123
+​    1: 456
+​    2: 789
+​    length: 3
+​    x: 135
+
+-->
