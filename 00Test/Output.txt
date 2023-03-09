@@ -22,7 +22,7 @@ pyFunc1 789
 
 ---------- ---------- ---------- ---------- ----------
 Open your browser's console
-http://localhost/Test.html
+http://localhost/fengari.html
 
 this is Test.lua.js
 LUA_VERSION 	Lua 5.3
@@ -38,3 +38,40 @@ XHRGEThttp://localhost/Test.lua.js
 js call lua :
 lua : luaTest()
 js1()  789
+
+
+
+---------- ---------- ---------- ---------- ----------
+Open your browser's console
+http://localhost/wasmoon.html
+
+initWasm() start
+Promise { <state>: "pending" }
+
+XHRGEThttp://localhost/JS/luajs/Embedded-Lua/00Test/glue.wasm
+[HTTP/1.1 200 OK 10ms]
+
+mainProg() after initWasm
+LUA_VERSION 	Lua 5.4
+Your system is 32-bit
+native size 32 bit
+lua_Integer 32 bit
+luacofig.h - define LUA_32BITS : 	32
+lua : luaTest()
+js1()  789
+
+
+
+*Note 
+https://rustwasm.github.io/book/reference/which-crates-work-with-wasm.html#which-crates-will-work-off-the-shelf-with-webassembly
+
+* File I/O
+WebAssembly does not have access to a file system, 
+so crates that assume the existence of a file system — 
+and don't have wasm-specific workarounds — will not work.
+
+
+* C and System Library Dependencies
+There are no system libraries in wasm, 
+so any crate that tries to bind to a system library won't work.
+
