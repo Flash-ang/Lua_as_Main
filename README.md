@@ -1,4 +1,4 @@
-# Embedded-Lua
+# Lua_as_Main
 
 1. Use Lua for main program logic.
 	- Init.
