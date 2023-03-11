@@ -6,7 +6,7 @@
 	- Reset Game.
 
 
-2. For web, use HTML, CSS, canvas.
+2. For web, use HTML, javascript, canvas.
 	- Use fengari (https://fengari.io/) (fengari-web.js) connect between javascript and Lua.
 	- Use timer (setInterval) to control refresh speed.
 	- Use file.lua.js to avoid extra settings on web server.
