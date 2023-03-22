@@ -81,8 +81,6 @@ end
 function GameStart()
     window.clearScreen( true );
     local player = (step%2) + 1; -- 1 or 2
-    local c1 = { 0, 0, 0 }; --RGB
-    local c2 = { 255, 0, 0 }; --RGB
 
     window.drawBoard();
     --print( 'window.keyName', window.keyName);
@@ -121,7 +119,6 @@ end --GameStart
 
 function MainMenu()
     --print( 'lua : this is Main Menu', window.keyCode );
-    local c = { 0, 0, 255 }; --RGB
 
     window.clearScreen( true );
     window.drawText( 80, 10, 'Main Menu', 0, 0, 255 ); -- 'Main Menu' width 150px
