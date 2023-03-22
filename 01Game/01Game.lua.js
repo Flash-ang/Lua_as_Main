@@ -39,7 +39,6 @@ end
 
 function drawChips()
     local dx, dy, ch, pos;
-    local c = { 255, 0, 0 }; --RGB
 
     pos = 1;
     for y = 1, 3 do
@@ -53,9 +52,6 @@ function drawChips()
                 window.drawX( x, y );
             end
 
-            if( ch == 0 ) then
-                -- window.drawText( x * 72, y * 72, pos, c );
-            end
             pos = pos + 1;
         end --x
     end --y
@@ -140,6 +136,7 @@ function ginit()
 end
 
 function gloop()
+    print( 'lua gloop()' );
     if window.gameMode == 'Start' then
         GameStart();
     end
